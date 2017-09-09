@@ -1,14 +1,16 @@
 .PHONY: all
 all: game.nes
 
-%.o: %.s
-	ca65 -o $@ $<
+OBJ_FILES = main.o intro.o audio.o
 
-game.nes: main.o
-	ld65 main.o -C nesfile.ini -m game.map -o game.nes
+%.o: %.s
+	ca65 -o $@ $< -g
+
+game.nes: $(OBJ_FILES)
+	ld65 $(OBJ_FILES) -C nesfile.ini -m game.map -o game.nes
 
 clean:
-	rm -f game.nes main.o game.map main.lst
+	rm -f $(OBJ_FILES) game.map main.lst
 
 run: game.nes
 	fceux --pal 1 --nogui 1 --opengl 0 game.nes
