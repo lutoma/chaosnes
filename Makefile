@@ -2,7 +2,7 @@
 all: game.nes
 
 %.o: %.s
-	ca65 -o $@ $< -l
+	ca65 -o $@ $<
 
 game.nes: main.o
 	ld65 main.o -C nesfile.ini -m game.map -o game.nes
