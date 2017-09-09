@@ -100,22 +100,5 @@ init:
 
 ; =====	CHR-ROM Pattern Tables =================================================
 
-; ----- Pattern Table 0 --------------------------------------------------------
-
 .segment "PATTERN0"
-
-	.incbin "anton2.chr"
-
-.segment "PATTERN1"
-
-	.repeat $100
-		.byt %11111111
-		.byt %10111011
-		.byt %11010111
-		.byt %11101111
-		.byt %11010111
-		.byt %10111011
-		.byt %11111111
-		.byt %11111111
-		Repeat 8, .byt $FF
-	.endrepeat
+	.incbin "sprites/ascii.chr"
