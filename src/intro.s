@@ -94,7 +94,7 @@ message_done:
 	; Scroll off screen:
 	ldx #0
 @scroll_loop:
-	cpx #((7*8)<<1)		; Scroll by 56 scanlines (7 lines), using lower bit to halve the speed.
+	cpx #((8*8)<<1)		; Scroll by 64 scanlines (8 lines), using lower bit to halve the speed.
 	beq intro_end		; Reached our target scroll limit.
 	wait_for_nmi
 	lda #0
