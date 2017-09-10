@@ -65,7 +65,10 @@ init:
 	; Wait until the screen refreshes.
 	wait_for_nmi
 
-	jsr play_nsf
+	jsr pently_init
+	lda #1
+	jsr pently_start_music
+
 	jsr intro
 
 ; We should never really end up here, but in case we do, loop forever.
@@ -79,13 +82,13 @@ init:
 ; Use of .proc means labels are specific to this scope.
 .proc nmi_isr
 	dec nmi_counter
+	jsr pently_update
 	rti
 .endproc
 
 
 ; IRQ/BRK ISR:
 .proc irq_isr
-	; Handle IRQ/BRK here.
 	rti
 .endproc
 

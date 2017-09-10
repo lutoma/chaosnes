@@ -6,3 +6,6 @@
 *.tht
 *.log
 *.out
+util/text2data
+util/nsf2data
+util/read_nsf_header

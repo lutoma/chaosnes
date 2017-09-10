@@ -1,7 +1,7 @@
 .PHONY: all
 all: game.nes
 
-OBJ_FILES = src/main.o src/intro.o src/nsfplayer.o src/controller.o
+OBJ_FILES = src/main.o src/intro.o src/controller.o src/pentlysound.o src/pentlymusic.o src/musicseq.o
 FCEUX = fceux
 
 %.o: %.s
