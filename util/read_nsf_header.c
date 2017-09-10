@@ -8,9 +8,9 @@ struct nsf_header {
 	uint8_t total_songs;
 	uint8_t starting_song;
 
-	uint16_t load_addr;
-	uint16_t init_addr;
-	uint16_t play_addr;
+	uint8_t load_addr[2];
+	uint8_t init_addr[2];
+	uint8_t play_addr[2];
 
 	uint8_t name[32];
 	uint8_t artist[32];
@@ -44,9 +44,12 @@ int main() {
 	printf("Total songs: %d\n", header->total_songs);
 	printf("Starting song: %d\n", header->starting_song);
 
-	printf("Load addr: 0x%x\n", header->load_addr);
-	printf("Init addr: 0x%x\n", header->init_addr);
-	printf("Play addr: 0x%x\n", header->play_addr);
+	printf("Load addr (lo): 0x%x\n", header->load_addr[0]);
+	printf("Init addr (lo): 0x%x\n", header->init_addr[0]);
+	printf("Play addr (lo): 0x%x\n", header->play_addr[0]);
+	printf("Load addr (hi): 0x%x\n", header->load_addr[1]);
+	printf("Init addr (hi): 0x%x\n", header->init_addr[1]);
+	printf("Play addr (hi): 0x%x\n", header->play_addr[1]);
 
 	printf("Name: %s\n", (char*)&header->name);
 	printf("Artist: %s\n", (char*)&header->artist);
