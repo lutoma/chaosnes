@@ -2,3 +2,7 @@
 *.nes.deb
 *.map
 *.o
+*.cdl
+*.tht
+*.log
+*.out
