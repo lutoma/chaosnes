@@ -61,7 +61,7 @@ intro:
 	; Wait 1s:
 	nmi_delay 60
 
-@char_loop:
+char_loop:
 	; Fix message screen offset pointer:
 	lda #$20			; Hi-byte of $2000
 	sta PPU_ADDR
@@ -78,10 +78,14 @@ intro:
 	sta PPU_DATA		; Write the character.
 
 	cmp #$20			; Ascii 20 = space
-	beq @char_loop		; Skip typing effect for spaces.
+	beq @wait_write		; Skip typing effect for spaces.
+	nmi_delay 2 		; Wait for 30ms (2 frames at 60Hz):
 
-	nmi_delay 3			; Wait for 50ms (3 frames at 60Hz):
-	jmp @char_loop		; Go process the next character.
+	; Even for space characters, we need to wait for at least one NMI, or else
+	; the rendering will get b0rked.
+@wait_write:
+	wait_for_nmi
+	jmp char_loop		; Go process the next character.
 
 message_done:
 	; Wait 1 sec:
