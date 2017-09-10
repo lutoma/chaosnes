@@ -1,3 +1,4 @@
-game.nes
-game.map
+*.nes
+*.nes.deb
+*.map
 *.o

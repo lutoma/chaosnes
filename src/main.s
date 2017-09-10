@@ -2,12 +2,6 @@
 .include "nesdefs.inc"
 .include "helpers.inc"
 
-.export nmi_counter
-.export palette_data
-.export screen_offset
-.export msg_ptr
-.export hello_msg
-
 .segment "INESHDR"
 	.byt "NES",$1A
 	.byt 1 				; 1 x 16kB PRG block.
@@ -18,16 +12,14 @@
 .segment "VECTORS"
 	.addr nmi_isr, init, irq_isr
 
-.include "ram.inc"		; Reservations in Zero-page RAM, and General (BSS) WRAM.
+.zeropage
+	.export nmi_counter
+	; Counts DOWN for each NMI.
+	nmi_counter: .res 1
+
 .include "rodata.inc"	; "RODATA" segment; data found in the ROM.
 
-
-.segment "CODE"
-
-.import intro
-.import init_audio
-
-; Main entry point
+.code
 .proc init
 init:
 	basic_init
@@ -37,7 +29,7 @@ init:
 	ppu_wakeup
 
 	; We're in VBLANK for a short while, so do video prep now...
-	load_palettes palette_data
+	load_palettes intro_palette
 
 	; Clear all 4 nametables (i.e. start at nametable 0, and clear 4 nametables):
 	clear_vram 0, 4
@@ -73,13 +65,13 @@ init:
 	; Wait until the screen refreshes.
 	wait_for_nmi
 
-	jsr init_audio
+	jsr play_nsf
 	jsr intro
 
 ; We should never really end up here, but in case we do, loop forever.
-:
-	jmp :-
-
+;:
+;	jmp :-
+	jmp ($FFFC) ; Just reset for now during development
 .endproc
 
 

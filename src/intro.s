@@ -3,14 +3,24 @@
 .include "helpers.inc"
 
 .importzp nmi_counter
-.importzp screen_offset
-.importzp msg_ptr
-.import hello_msg
 
+.proc intro
+.segment "ZEROPAGE"
+msg_ptr:		.res 1	; Points to the next character to fetch from a message.
+screen_offset:	.res 1	; Points to the next screen offset to write.
+
+.rodata
+rzl_presents:
+	    ; 01234567890123456789012345678901
+	.byt "  RaumZeitLabor Entertainment   "
+	.byt "            presents            "
+	.byt "                                "
+	.byt "    code by lutoma & silsha     "
+	.byt "       graphics by silsha       "
+	.byt "         music by Ozzed         ",0
+
+.code
 .export intro
-
-.segment "CODE"
-
 intro:
 	; Wait 1s (60 frames at 60Hz):
 	nmi_delay 60
@@ -32,7 +42,7 @@ intro:
 	lda #%01010101		; Both the upper rows (bits 0-3) and the lower rows (bits 4-7) get pallete 1 (%01 x 4).
 :	Repeat 4, sta PPU_DATA
 	dex
-	bne :-
+	bne :-i
 
 	; Point screen offset counter back to start of line 2:
 	lda #(32*2)
@@ -51,42 +61,35 @@ intro:
 	; Wait 1s:
 	nmi_delay 60
 
-char_loop:
+@char_loop:
 	; Fix message screen offset pointer:
 	lda #$20			; Hi-byte of $2000
 	sta PPU_ADDR
 	lda screen_offset	; Get current screen offset.
 	inc screen_offset	; Increment screen offset variable, for next time.
 	sta PPU_ADDR
-
-	; Fix scroll position:
 	ppu_scroll 0, 0
 
 	; Write next character of message:
 	ldx msg_ptr			; Get message offset.
 	inc msg_ptr			; Increment message offset source.
-	lda hello_msg,x		; Get message character.
+	lda rzl_presents,x		; Get message character.
 	beq message_done	; A=0 => End of message.
 	sta PPU_DATA		; Write the character.
 
-	cmp #$20
-	beq skip_click		; Don't make a click for space characters.
+	cmp #$20			; Ascii 20 = space
+	beq @char_loop		; Skip typing effect for spaces.
 
-	; Activate short one-shot noise effect here, by loading length counter:
-	lda #%00111000		; Length ID 7 is "6" (?) steps => 6/240 => 25ms??
-	sta APU_NOISE_TIMER
-
-skip_click:
 	nmi_delay 3			; Wait for 50ms (3 frames at 60Hz):
-	jmp char_loop		; Go process the next character.
+	jmp @char_loop		; Go process the next character.
 
 message_done:
 	; Wait 1 sec:
-	nmi_delay 60
+	nmi_delay 240
 
 	; Scroll off screen:
 	ldx #0
-scroll_loop:
+@scroll_loop:
 	cpx #((7*8)<<1)		; Scroll by 56 scanlines (7 lines), using lower bit to halve the speed.
 	beq intro_end		; Reached our target scroll limit.
 	wait_for_nmi
@@ -96,7 +99,7 @@ scroll_loop:
 	lsr a				; Discard lower bit.
 	sta PPU_SCROLL		; Y scroll is upper 6 bits of X register.
 	inx					; Increment scroll counter.
-	jmp scroll_loop
+	jmp @scroll_loop
 
 intro_end:
 	; Clean up after us
@@ -104,3 +107,4 @@ intro_end:
 	ppu_scroll 0, 0
 
 	rts
+.endproc
