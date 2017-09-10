@@ -42,7 +42,7 @@ intro:
 	lda #%01010101		; Both the upper rows (bits 0-3) and the lower rows (bits 4-7) get pallete 1 (%01 x 4).
 :	Repeat 4, sta PPU_DATA
 	dex
-	bne :-i
+	bne :-
 
 	; Point screen offset counter back to start of line 2:
 	lda #(32*2)
