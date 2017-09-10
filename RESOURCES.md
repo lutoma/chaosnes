@@ -28,3 +28,9 @@ Audio
   * Pretty amazing Creative Commons NSF music: http://ozzed.net/
   * ^: http://www.fodxm.co.uk/music.htm
   * ggsound engine: https://github.com/gradualgames/ggsound
+  * http://www.deflemask.com/
+
+Sprites
+=======
+  * [pilbmp2nes.py; Bitmap to NES CHR converter using Python Imaging Library](https://github.com/fritzvd/emesh/blob/0e3cf835373a292f06a08f56c7cec63ffad37f25/tools/pilbmp2nes.py)
+  * [YY-CHR; Sprite editor for NES](http://www.romhacking.net/utilities/119/)
