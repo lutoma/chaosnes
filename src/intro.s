@@ -1,6 +1,7 @@
 .include "nes.inc"
 .include "nesdefs.inc"
 .include "helpers.inc"
+.include "pently.inc"
 
 .importzp nmi_counter
 
@@ -16,8 +17,7 @@ rzl_presents:
 	.byt "            presents            "
 	.byt "                                "
 	.byt "    code by lutoma & silsha     "
-	.byt "       graphics by silsha       "
-	.byt "         music by Ozzed         ",0
+	.byt "       graphics by silsha       ",0
 
 .code
 .export intro
@@ -61,6 +61,9 @@ intro:
 	; Wait 1s:
 	nmi_delay 60
 
+	lda #0				; First song
+	jsr pently_start_music
+
 char_loop:
 	; Fix message screen offset pointer:
 	lda #$20			; Hi-byte of $2000
@@ -88,11 +91,14 @@ char_loop:
 	jmp char_loop		; Go process the next character.
 
 message_done:
-	; Wait 1 sec:
-	nmi_delay 240
+	; Wait for a while (currently hardcoded for music duration)
+	nmi_delay 255
+	nmi_delay 140
+	jsr pently_stop_music
 
 	; Scroll off screen:
 	ldx #0
+	jmp intro_end
 @scroll_loop:
 	cpx #((8*8)<<1)		; Scroll by 64 scanlines (8 lines), using lower bit to halve the speed.
 	beq intro_end		; Reached our target scroll limit.

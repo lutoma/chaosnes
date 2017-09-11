@@ -66,9 +66,6 @@ init:
 	wait_for_nmi
 
 	jsr pently_init
-	lda #1
-	jsr pently_start_music
-
 	jsr intro
 
 ; We should never really end up here, but in case we do, loop forever.

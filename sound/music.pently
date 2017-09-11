@@ -1,0 +1,295 @@
+# For now, this is mostly just a subset of pently's sample music
+
+durations stick
+notenames english
+
+sfx kick on noise
+  volume 12 10 8 6 5 4 3 2 1 1
+  pitch 10 0
+
+sfx snare on noise
+  volume 12 10 8 6 5 4 3 2 1 1
+  pitch 4 10
+
+sfx hihat on noise
+  volume 4 2 2 1
+  pitch 12
+  timbre | 0 1
+
+sfx quiethat on noise
+  volume 2 1
+  pitch 12
+  timbre | 0 1
+
+sfx openhat on noise
+  volume 6 5 4 4 3 3 3 2 2 2 1 1 1 1 1
+  pitch 12
+  timbre | 0 1
+
+sfx snarehat on noise
+  volume 6 5 4 4 3 3 3 2 2 2 1 1 1 1 1
+  pitch 4 10 10 12
+  timbre 0 0 | 0 1
+
+sfx trikick on triangle
+  volume 15 15 15 2 2
+  pitch e' c' a f# e
+
+sfx trisnare on triangle
+  volume 15 15 2 2
+  pitch bb' ab' g' f#'
+
+sfx tubfloorA on pulse
+  volume 12 10 8 7 6 5 4 4 3 3 2 1
+  timbre 1 1 2
+  pitch eb, cb, b,, bb,, a,,
+
+sfx arghatbuzz on noise
+  volume 4 2 3 2 2 1
+  pitch 12 12 7
+  timbre 0 1
+
+sfx stickskick on noise
+  volume 4 6 5 4 3 3 2 2 1 1 1 1 0
+  pitch 3 4 5 5 5 4 5 4
+  timbre 1
+
+sfx stickshatlo on noise
+  volume 4 6 3 2 1 1 0
+  pitch 6
+  timbre 1
+
+drum kick kick
+drum snare snare
+drum clhat hihat
+drum ohat openhat
+drum tkick kick trikick
+drum tsnare snare trisnare
+drum tsohat snarehat trisnare
+drum tubkick kick tubfloorA
+drum arghatbuzz arghatbuzz
+drum quiethat quiethat
+drum stickskick stickskick
+drum stickshatlo stickshatlo
+
+instrument bass
+
+instrument framepop
+  volume 14 0
+
+instrument banjo
+  volume 12 8 6 5 4 4 3 3 2
+  decay 1
+  timbre 0
+
+instrument latebanjo
+  volume 0 12 8 6 5 4 4 3 3 2
+  decay 1
+  timbre 0
+
+instrument tubbass
+  volume 12 10 8 7 6 5 4
+  decay 2
+  timbre 1 1 2
+  pitch 6 4 2 1 0
+
+instrument tubbass_slow
+  volume 14 13 12 11 10 9 9 9 8
+  decay 1
+  timbre 0 0 1 1 2
+  pitch 6 4 2 1 0
+
+instrument dut
+  volume 12 12 11 8 6 5 4 2 1 0
+  decay 16
+  timbre 2 1 0
+  pitch -3 -1 0 0 -1 -1 -2 -3 -5 -7
+
+instrument feat_wah
+  volume 8 8 7 7 6 6 5 5 5 4 4 4 3
+  decay 1
+  timbre 2 2 2 2 2 2 1 1 1 1 1 1 0
+
+instrument feat_power
+  timbre 0
+
+instrument bf98_flute
+  volume 4 6 7 6 6 5 5 5
+  timbre 2
+
+# This and latebanjo will be the test cases for
+# attack/sfx data substring detection
+instrument bf98_flute2
+  volume 4 6 7 6 6 5 5 4
+  timbre 2
+
+instrument bf98_osti
+  volume 3 6 7 6 5
+  timbre 0
+  detached
+
+instrument orchhit
+  volume 8 8 8 7 7 7 6 6 6 5 5 5 4 4 4 3 3 3 2 2 2 1 1 1 0
+  timbre 1
+  pitch | 12 0 -12
+
+instrument crashcymbal
+  volume 7
+  decay 2
+  timbre 0
+
+instrument fiddle2
+  volume 3 5 6 5 5 4
+  timbre 1
+  detached
+
+instrument bf98_fluteshort
+  volume 4 6 7 6 5
+  timbre 2
+
+instrument vowele
+  volume 4 6 7 6 6 5 5 5
+  timbre 1
+
+instrument vowela
+  volume 4 6 7 6 6 5 5 5
+  timbre 0
+
+instrument argtwinkle
+  volume 7 6 6 5 5 4 4 4 4 4 2
+  decay 1
+
+instrument argdive
+  volume 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
+  pitch -1 -2 -3 -4 -5 -6 -7 -8 -9 -10 -11 -12 -13 -14 -15 -16 -17 -18 -19 -20 -21
+  timbre 2
+
+instrument arg2bass
+  volume 10
+  decay 20
+
+instrument toot0
+  volume 4 7 8 8 7 5 3 2 1 1 0
+  timbre 2
+
+instrument toot1
+  volume 4 7 8 8 7 5 0
+  timbre 2
+
+instrument stringlead
+  volume 4 7 8 8 7 7 5 4 4 3
+  timbre 0
+
+@ENno3 = 70
+@ENpower = 7C
+@ENsus4 = 57
+@ENMno5 = 4C
+
+
+song sticks
+  time 12/8
+  scale 16
+  tempo 100
+
+  at 1
+  pattern introbanjo1 with banjo on pulse1
+    relative
+    w8 r d'4. a2 c4 d8
+  pattern introch2 with toot0 on pulse2
+    relative
+    d4. @banjo c' @tubbass d,,2. @toot0
+    f'4. @banjo c' @tubbass f,,2. @toot0
+    g'4. @banjo c @tubbass g, @banjo d'
+    @tubbass a, @banjo a''':37
+    @tubbass c,,, @banjo c'''4:47
+    @tubbass c,,,8 d2. w4. r
+  play introbanjo1
+  play introch2
+
+  at 3:3
+  pattern introbanjo2 with banjo on pulse1
+    relative
+    b4. c4 d8 e4 d8 e4. e4 g4. a8
+    d2.:47 w4. r
+  play introbanjo2
+
+  at 4
+  pattern introbass with bass on triangle
+    relative
+    a,,2. c4. w4 c8 d2. w4. r
+  pattern introdrum
+    clhat4. w4 clhat8
+    clhat4. w4 clhat8
+    clhat2. w4. stickskick
+    w2. w4. clhat
+
+  play introbass
+  play introdrum
+
+  pattern bassstart with toot1 on triangle
+    relative
+    w4 g''2 g w8 f2 f4. w2.
+  pattern bass with toot0 on triangle
+    relative
+    @toot0 c4 @toot1 g'''2 g w8 f2 f4. w2.
+  pattern chords1start with toot0 on pulse1
+    relative
+    w4 @toot0 c''2 bb w8 a2 a4. w2.
+  pattern chords1 with toot0 on pulse1
+    relative
+    @tubbass c,4 @toot0 c'''2 bb w8 a2 a4.
+      w4 w16 w4g a' w2g bb c w4
+    @tubbass c,,,,4 @toot0 c'''2 bb w8 a2 a4.
+      a'4 a8 g4.
+  pattern chords2 with toot0 on pulse2
+    relative
+    w4 e''2 d w8 c2 c4. w2.
+  pattern drum
+    stickskick2. clhat2. stickshatlo2. clhat2.
+
+  pattern v_iv_bass with toot0 on triangle
+    relative
+    @toot0 g4 @toot1 g''2 g w8 bb2
+    bb w8 g2
+    f w8 f2 f4.
+    w2. @toot0 f,,
+  pattern v_iv_chords1 with toot0 on pulse1
+    relative
+    r4 bb'2 c w8 d2
+    d w8 bb2
+    bb w8 a2 a4.
+    @banjo f a, a2.
+  pattern v_iv_chords2 with tubbass on pulse2
+    relative
+    g,4 @toot0 d'''2 e w8 f2
+    f w8 d2
+    d w8 c2 c4.
+    @banjo r4 c,4. c8 @tubbass f,,4 @banjo f'8 e4 d8
+
+  at 6
+  play chords2
+  play chords1start
+  stop triangle
+  at 7
+  stop drum
+
+  at 8
+  play bassstart
+
+  at 10
+  segno
+  play chords1
+  play chords2
+  play bass
+  play drum
+
+  at 26
+  play v_iv_bass
+  play v_iv_chords1
+  play v_iv_chords2
+
+  at 29
+  stop drum
+
+  at 30
+  dal segno
