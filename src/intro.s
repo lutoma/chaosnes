@@ -25,30 +25,35 @@ intro:
 	; Wait 1s (60 frames at 60Hz):
 	nmi_delay 60
 
-	; Clear lines 2-6 of the nametable (i.e. skip first 32*2 tiles, clear next 32*4 tiles):
-	ppu_addr $2000+(32*2)
-	lda #0
-	ldx #(32*4/4)		; NOTE: 4 x "STA" instructions make this loop faster.
-:	Repeat 4, sta PPU_DATA
-	dex
-	bne :-
+	; This seems unnecessary as we already do clear_vram in main.s. Maybe it's required to
+	; clear the VRAM again, but after the third frame. But even then, this should probably
+	; be in main.s and use the clear_vram instead.
+	; As it also works without all this stuff (at least in FCEUX), it's commented for now.
+
+;	; Clear lines 2-6 of the nametable (i.e. skip first 32*2 tiles, clear next 32*4 tiles):
+;	ppu_addr $2000+(32*2)
+;	lda #0
+;	ldx #(32*4/4)		; NOTE: 4 x "STA" instructions make this loop faster.
+;:	Repeat 4, sta PPU_DATA
+;	dex
+;	bne :-
 
 	; Now fix the palettes for the above 4 lines (2-6) that we just cleared:
 	; NOTE: There are 4 actual rows to a metarow. 1 metarow is 8 bytes across.
 	; Hence, setting the palettes for rows 2-6 requires that we rewrite both
 	; metarows 0 and 1 (which covers actual rows 0-3, and 4-7, respectively).
-	ppu_addr $23c0 		; Select 1st metarow (rows 0-3; we'll then do 4-7).
-	ldx #(16/4)			; Fill two metarows (8 bytes each), which covers 8 actual rows.
-	lda #%01010101		; Both the upper rows (bits 0-3) and the lower rows (bits 4-7) get pallete 1 (%01 x 4).
-:	Repeat 4, sta PPU_DATA
-	dex
-	bne :-
+;	ppu_addr $23c0 		; Select 1st metarow (rows 0-3; we'll then do 4-7).
+;	ldx #(16/4)			; Fill two metarows (8 bytes each), which covers 8 actual rows.
+;	lda #%01010101		; Both the upper rows (bits 0-3) and the lower rows (bits 4-7) get pallete 1 (%01 x 4).
+;:	Repeat 4, sta PPU_DATA
+;	dex
+;	bne :-
 
-	; Point screen offset counter back to start of line 2:
+	; Point screen offset counter to start of line 2:
 	lda #(32*2)
 	sta screen_offset
 
-	; Point back to start of source message:
+	; Point to start of source message:
 	lda #0
 	sta msg_ptr
 
@@ -56,7 +61,7 @@ intro:
 	; NOTE: We have to do this after writing to VRAM, because scroll position seems
 	; to automatically track the VRAM target address. For a possible explanation of this, see:
 	; http://wiki.nesdev.com/w/index.php/The_skinny_on_NES_scrolling
-	ppu_scroll 0, 0
+	;ppu_scroll 0, 0
 
 	; Wait 1s:
 	nmi_delay 60
