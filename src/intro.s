@@ -98,7 +98,6 @@ message_done:
 
 	; Scroll off screen:
 	ldx #0
-	txs
 
 @scroll_loop:
 	cpx #((8*8)<<1)		; Scroll by 64 scanlines (8 lines), using lower bit to halve the speed.
@@ -106,12 +105,10 @@ message_done:
 	wait_for_nmi
 	lda #0
 	sta PPU_SCROLL		; X scroll is still 0.
-	tsx
 	txa
 	lsr a				; Discard lower bit.
 	sta PPU_SCROLL		; Y scroll is upper 6 bits of X register.
 	inx					; Increment scroll counter.
-	txs
 	jmp @scroll_loop
 
 intro_end:
