@@ -22,6 +22,9 @@
 	.export pently_zptemp
 	pently_zptemp: .res 5
 
+	.export tvSystem
+	tvSystem: .res 8
+
 .include "rodata.inc"	; "RODATA" segment; data found in the ROM.
 
 .code
@@ -74,8 +77,10 @@ init:
 	; NOTE: There are 2 different ways to wait for VBLANK. This is one, recommended
 	; during early startup init. The other is by the NMI being triggered.
 	; For more information, see: http://wiki.nesdev.com/w/index.php/NMI#Caveats
-:	bit PPU_STATUS		; P.V (overflow) <- bit 6 (S0 hit); P.N (negative) <- bit 7 (VBLANK).
-	bpl	:-				; Keep checking until bit 7 (VBLANK) is asserted.
+	; Instead of waiting for PPU_STATUS ourselves, we let pently take care of it.
+	; This will also detect whether we run on a PAL or NTSC system.
+	jsr getTVSystem
+	sta tvSystem
 	; First PPU frame has reached VBLANK.
 
 	; NOTE: "bit PPU_STATUS" reads the bit, but actually clears it in the process too,

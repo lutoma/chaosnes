@@ -1,7 +1,7 @@
 ; Configuration settings for Pently
 
 ; Disable features to save ROM space
-PENTLY_USE_PAL_ADJUST = 0
+PENTLY_USE_PAL_ADJUST = 1
 PENTLY_USE_ROW_CALLBACK = 0
 PENTLY_USE_VIBRATO = 1
 PENTLY_USE_ARPEGGIO = 1
