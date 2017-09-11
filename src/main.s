@@ -84,7 +84,11 @@ init:
 ; Use of .proc means labels are specific to this scope.
 .proc nmi_isr
 	dec nmi_counter
+	txa
+	pha
 	jsr pently_update
+	pla
+	tax
 
 	; Temporary – Should probably only be checked on the right IRQs
 	; Play sound effect if any button is pressed
