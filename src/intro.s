@@ -11,6 +11,18 @@ msg_ptr:		.res 1	; Points to the next character to fetch from a message.
 screen_offset:	.res 1	; Points to the next screen offset to write.
 
 .rodata
+; Export the intro palette as we already set it in main.s
+.export intro_palette
+intro_palette:
+; Colours available in the NES palette are:
+; http://bobrost.com/nes/files/NES_Palette.png
+.repeat 2
+	pal $0f,	$16, $2A, $12	; $0f (black), $16 (red), $2A (green), $12 (blue).
+	pal 		$16, $28, $30	; $16 (red), $28 (yellow), $3A (very light green).
+	pal 		$00, $10, $20	; Grey; light grey; white.
+	pal 		$25, $37, $27	; Pink; light yellow; orange.
+.endrepeat
+
 rzl_presents:
 	    ; 01234567890123456789012345678901
 	.byt "  RaumZeitLabor Entertainment   "

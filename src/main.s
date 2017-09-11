@@ -25,8 +25,6 @@
 	.export tvSystem
 	tvSystem: .res 1
 
-.include "rodata.inc"	; "RODATA" segment; data found in the ROM.
-
 .code
 .proc init
 init:
@@ -153,11 +151,13 @@ init:
 
 	jsr pently_init
 	jsr intro
+	jsr render_level
 
-; We should never really end up here, but in case we do, loop forever.
-;:
-;	jmp :-
-	jmp ($FFFC) ; Just reset for now during development
+; Loop forever while we wait for interrupts
+:
+	nop
+	nop
+	jmp :-
 .endproc
 
 
@@ -176,7 +176,7 @@ init:
 	jsr readjoy
 	lda buttons
 	beq end_nmi
-	jsr pently_stop_music
+	jsr move_character
 
 end_nmi:
 	rti
