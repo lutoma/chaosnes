@@ -1,1 +1,3 @@
 util/* linguist-vendored
+*.s linguist-language=Assembly
+*.inc linguist-language=Assembly
