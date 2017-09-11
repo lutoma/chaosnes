@@ -15,7 +15,7 @@ game.nes: $(OBJ_FILES)
 	ld65 $(OBJ_FILES) -C nesfile.ini -m game.map -o game.nes
 
 clean:
-	rm -f $(OBJ_FILES) game.map game.nes src/musicseq.s
+	rm -f $(OBJ_FILES) game.map game.nes src/musicseq.s src/musicseq.se
 
 run: game.nes
 	$(FCEUX) --pal 1 --nogui 1 --opengl 0 game.nes

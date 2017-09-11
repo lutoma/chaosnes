@@ -11,3 +11,4 @@ util/nsf2data
 util/read_nsf_header
 util/ft2p
 src/musicseq.s
+src/musicseq.se
