@@ -20,6 +20,7 @@ Video
   * https://raw.githubusercontent.com/camsaul/nesasm/master/beagle_bros_6502_reference.png
   * http://jarrodparkes.com/2014/01/20/nes-attribute-tables/
   * http://bisqwit.iki.fi/utils/nespalette.php
+  * [PPU rendering](https://wiki.nesdev.com/w/index.php/PPU_rendering)
 
 Audio
 =====
