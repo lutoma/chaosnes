@@ -23,7 +23,7 @@
 	pently_zptemp: .res 5
 
 	.export tvSystem
-	tvSystem: .res 8
+	tvSystem: .res 1
 
 .include "rodata.inc"	; "RODATA" segment; data found in the ROM.
 
