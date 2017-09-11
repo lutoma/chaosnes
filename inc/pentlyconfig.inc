@@ -21,9 +21,7 @@ PENTLY_INITIAL_4011 = 64
 
 ; Five bytes of scratch space on zero page that need not be preserved
 ; across calls.  This needs to be either an = or an .importzp
-
-pently_zptemp = $0000
-; .importzp pently_zptemp
+.importzp pently_zptemp
 
 .define PENTLY_CODE "CODE"
 .define PENTLY_RODATA "RODATA"

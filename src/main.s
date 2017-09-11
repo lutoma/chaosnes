@@ -19,6 +19,9 @@
 	; Counts DOWN for each NMI.
 	nmi_counter: .res 1
 
+	.export pently_zptemp
+	pently_zptemp: .res 5
+
 .include "rodata.inc"	; "RODATA" segment; data found in the ROM.
 
 .code
