@@ -11,6 +11,7 @@ JOYPAD2 = $4017
 .code
 ; At the same time that we strobe bit 0, we initialize the ring counter
 ; so we're hitting two birds with one stone here
+.export readjoy
 readjoy:
 	lda #$01
 	; While the strobe bit is set, buttons will be continuously reloaded.

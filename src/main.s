@@ -2,6 +2,8 @@
 .include "nesdefs.inc"
 .include "helpers.inc"
 
+.importzp buttons
+
 .segment "INESHDR"
 	.byt "NES",$1A
 	.byt 1 				; 1 x 16kB PRG block.
@@ -80,6 +82,15 @@ init:
 .proc nmi_isr
 	dec nmi_counter
 	jsr pently_update
+
+	; Temporary – Should probably only be checked on the right IRQs
+	; Play sound effect if any button is pressed
+	jsr readjoy
+	lda buttons
+	beq end_nmi
+	jsr pently_stop_music
+
+end_nmi:
 	rti
 .endproc
 
