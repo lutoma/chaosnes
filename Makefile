@@ -6,7 +6,7 @@ FCEUX = fceux
 
 src/musicseq.s: sound/music.pently
 	util/pentlyas.py --period-region pal --periods 76 $< -o $@
-	sed -i "s#../../src/pentlyseq.inc#pentlyseq.inc#" $@
+	sed -ie "s#../../src/pentlyseq.inc#pentlyseq.inc#" $@
 
 %.o: %.s
 	ca65 --auto-import -t nes -I inc -o $@ $< -g
