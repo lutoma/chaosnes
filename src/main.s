@@ -151,6 +151,7 @@ init:
 
 	jsr pently_init
 	jsr intro
+	jsr main_menu
 	jsr render_level
 
 ; Loop forever while we wait for interrupts
