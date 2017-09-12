@@ -108,10 +108,8 @@ char_loop:
 	jmp char_loop		; Go process the next character.
 
 message_done:
-	; Wait for a while (currently hardcoded for music duration)
+	; Wait for a while
 	nmi_delay 255
-	nmi_delay 140
-	jsr pently_stop_music
 
 	; Scroll off screen:
 	ldx #0

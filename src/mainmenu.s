@@ -93,6 +93,8 @@ wait_for_input:
 	bne wait_for_input
 
 menu_done:
+	jsr pently_stop_music
+
 	; Clean up after us
 	clear_vram 0, 4
 	ppu_scroll 0, 0
