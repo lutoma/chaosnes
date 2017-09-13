@@ -13,3 +13,4 @@ util/ft2p
 src/musicseq.s
 src/musicseq.se
 util/chr-rom-to-bmp
+sprites/tiles.chr
