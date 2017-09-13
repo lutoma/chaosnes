@@ -15,21 +15,19 @@ game_palette:
 .endrepeat
 
 .zeropage
-screen_offset:	.res 1
+screen_offset_low:	.res 1
+screen_offset_high:	.res 1
 in_level:		.res 1
 
 .proc level
 .code
 .export render_level
 
-; Show the character at the position in A
+; Show the character at the stored position
 render_character:
-	; Store A for later
-	pha
-
-	lda #$20			; Hi-byte of $2000
+	lda screen_offset_high
 	sta PPU_ADDR
-	pla					; Get position from A
+	lda screen_offset_low
 	sta PPU_ADDR
 	ppu_scroll 0, 0
 
@@ -45,9 +43,9 @@ move_character:
 	beq return
 
 	; Remove old character
-	lda #$20			; Hi-byte of $2000
+	lda screen_offset_high
 	sta PPU_ADDR
-	lda screen_offset
+	lda screen_offset_low
 	sta PPU_ADDR
 	ppu_scroll 0, 0
 	lda #0
@@ -73,36 +71,38 @@ move_character:
 	jmp paint
 
 move_right:
-	inc screen_offset
+	inc screen_offset_low
 	jmp paint
 
 move_left:
-	dec screen_offset
+	dec screen_offset_low
 	jmp paint
 
 move_down:
-	lda #31				; One line is 32 chars wide
-	adc screen_offset	; FIXME should handle overflows with carry bit
-	sta screen_offset
+	lda #31					; One line is 32 chars wide
+	adc screen_offset_low	; Add screen_offset_low w/ 31 in A
+	sta screen_offset_low	; Store computed result in screen_offset_low
+	bcs @carry				; Branch on overflow (carry bit set)
+	jmp paint
+@carry:
+	inc screen_offset_high	; On overflow in lower byte, increase higher byte
 	jmp paint
 
 move_up:
-	lda #31				; One line is 32 chars wide
-	sbc screen_offset	; FIXME should handle overflows with carry bit
-	sta screen_offset
-	bcc @overflow		; Overflow
+	lda screen_offset_low	; Load screen offset in A as sbc substracts its value from A, not other way around
+	sbc #32
+	bcc @carry
+	sta screen_offset_low
 	jmp paint
-
-	; In case of overflow, set line to 0
-@overflow:
-	lda #50
-	sta screen_offset
+@carry:
+	lda #(32*7)				; Set low byte to (32*7) + previous offset as one high byte decrease is 8 lines
+	adc screen_offset_low	; Now add the old offset to get the correct position within the eighth line
+	sta screen_offset_low
+	dec screen_offset_high	; Decrease high byte of screen offset
 	jmp paint
-
 
 paint:
 	; Paint new character
-	lda screen_offset
 	jsr render_character
 
 return:
@@ -111,8 +111,12 @@ return:
 render_level:
 	load_palettes game_palette
 
+	; Set default position
 	lda #120
-	sta screen_offset
+	sta screen_offset_low
+	lda #$20
+	sta screen_offset_high
+
 	jsr render_character
 
 	; Set in_level to 1 to enable controller input above
