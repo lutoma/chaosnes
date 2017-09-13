@@ -25,6 +25,13 @@
 	.export tvSystem
 	tvSystem: .res 1
 
+	; These are used in the display.inc write_text macro
+	.export text_offset
+	.export screen_offset
+	text_offset:	.res 1		; Points to the next character to fetch from a message.
+	screen_offset:	.res 1		; Points to the next screen offset to write.
+
+
 .code
 .proc init
 init:
