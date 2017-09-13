@@ -31,10 +31,14 @@
 	ppu_scroll 0, 0
 
 	; Write next character of message:
-	ldx text_offset			; Get message offset.
-	inc text_offset			; Increment message offset source.
+	ldx text_offset		; Get message offset.
+	inc text_offset		; Increment message offset source.
 	lda string,x		; Get message character.
 	beq @return			; A=0 => End of message.
+
+	cmp #$20			; Skip spaces
+	beq @loop
+
 	sta PPU_DATA		; Write the character.
 
 	wait_for_nmi
