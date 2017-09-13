@@ -12,3 +12,4 @@ util/read_nsf_header
 util/ft2p
 src/musicseq.s
 src/musicseq.se
+util/chr-rom-to-bmp

@@ -3,13 +3,15 @@ Useful links found on the internet™
 General
 =======
 
-  * http://wiki.nesdev.com
+  * [NESDev Wiki](http://wiki.nesdev.com)
   * https://emu-docs.org/NES/nestech.txt
 
 CPU
 ===
 
-  * Instruction set reference: http://obelisk.me.uk/6502/reference.html
+  * [Instruction set reference](http://obelisk.me.uk/6502/reference.html)
+  * [Addressing modes](http://obelisk.me.uk/6502/addressing.html)
+  * [Addressing modes w/ better examples](http://www.emulator101.com/6502-addressing-modes.html)
 
 Video
 =====

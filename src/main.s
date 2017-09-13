@@ -190,5 +190,5 @@ end_nmi:
 .endproc
 
 ; CHR-ROM Pattern Tables
-.segment "PATTERN0"
-	.incbin "sprites/ascii.chr"
+.segment "PATTERN"
+	.incbin "sprites/tiles.chr"
