@@ -6,18 +6,23 @@
 .importzp nmi_counter
 
 .rodata
-game_palette:
-.repeat 2
-	pal $09,	$16, $2A, $12	; $09 (dark plant green), $16 (red), $2A (green), $12 (blue).
-	pal 		$16, $28, $3A	; $16 (red), $28 (yellow), $3A (very light green).
-	pal 		$00, $10, $20	; Grey; light grey; white.
-	pal 		$25, $37, $27	; Pink; light yellow; orange.
-.endrepeat
+; Format (for now):
+; 0 = End of map
+; 1 = Empty tile / walkway
+; 2 = Wall
+map_data:
+	.byt 1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1
+	.byt 1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1
+	.byt 1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1
+	.byt 1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1
+	.byt 1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1
+	.byt 1,1,1,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,0
 
 .zeropage
 screen_offset_low:	.res 1
 screen_offset_high:	.res 1
-in_level:		.res 1
+in_level:			.res 1
+map_offset:			.res 1
 
 .proc level
 .code
@@ -109,8 +114,31 @@ return:
 	rts
 
 render_level:
-	load_palettes game_palette
+	; Load map
+	lda #0
+	sta map_offset
+@loop:
+	; Get next tile of map:
+	ldx map_offset		; Get map offset.
+	lda map_data,x		; Get map tile
+	beq @map_done		; A=0 => End of map
 
+	; 1 = Empty block / don't draw
+	cmp #1
+	beq @loop
+
+	ldy #$22
+	sty PPU_ADDR
+	stx PPU_ADDR
+	ppu_scroll 0, 0		; Clobbers X, but not A
+
+	sta PPU_DATA		; Write the character.
+
+	inc map_offset		; Increment map offset
+	wait_for_nmi
+	jmp @loop
+
+@map_done:
 	; Set default position
 	lda #120
 	sta screen_offset_low
