@@ -15,6 +15,7 @@
 ; But it's really quite tricky to put this into a reusable subroutine because
 ; we have to pass the pointer to the string somehow. FIXME.
 .macro write_text string, pos_high, pos_low
+.scope
 	lda #pos_low
 	sta screen_offset
 
@@ -51,4 +52,5 @@
 	jmp @loop
 
 @return:
+.endscope
 .endmacro
