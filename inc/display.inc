@@ -36,7 +36,7 @@
 	beq @return			; A=0 => End of message.
 
 	cmp #$20			; Skip spaces
-	beq @loop
+	beq @space
 
 	; Fix message screen offset pointer
 	; We have to use X here as A still holds the character for below
@@ -47,7 +47,7 @@
 	ppu_scroll 0, 0		; Clobbers X, but not A
 
 	sta PPU_DATA		; Write the character.
-
+@space:
 	wait_for_nmi
 	jmp @loop
 
