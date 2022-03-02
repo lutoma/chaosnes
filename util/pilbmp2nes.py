@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 #
 # Bitmap to NES CHR converter using Python Imaging Library
 # Copyright 2010-2012 Damian Yerrick
@@ -8,7 +8,7 @@
 # provided the copyright notice and this notice are preserved.
 # This file is offered as-is, without any warranty.
 #
-from __future__ import with_statement
+
 from PIL import Image
 
 def formatTilePlanar(tile, nPlanes):
@@ -22,7 +22,7 @@ def formatTilePlanar(tile, nPlanes):
     for y in range(8):
         slivers = [0 for i in range(nPlanes)]
         for x in range(8):
-            px = pixels.next()
+            px = next(pixels)
             for i in range(nPlanes):
                 slivers[i] = slivers[i] << 1
                 if px & 0x01:
@@ -30,7 +30,7 @@ def formatTilePlanar(tile, nPlanes):
                 px >>= 1
         for i in range(nPlanes):
             outplanes[i].append(slivers[i])
-    out = "".join(plane.tostring() for plane in outplanes)
+    out = b"".join(plane.tobytes() for plane in outplanes)
     return out
 
 def pilbmp2chr(im, tileWidth=8, tileHeight=8,
@@ -88,14 +88,14 @@ def parse_argv(argv):
     try:
         infilename = options.infilename
         if infilename is None:
-            infilename = argsreader.next()
+            infilename = next(argsreader)
     except StopIteration:
         raise ValueError("not enough filenames")
 
     outfilename = options.outfilename
     if outfilename is None:
         try:
-            outfilename = argsreader.next()
+            outfilename = next(argsreader)
         except StopIteration:
             outfilename = '-'
     if outfilename == '-':
@@ -115,23 +115,23 @@ def main(argv=None):
         argv = sys.argv
         if (argvTestingMode and len(argv) < 2
             and sys.stdin.isatty() and sys.stdout.isatty()):
-            argv.extend(raw_input('args:').split())
+            argv.extend(input('args:').split())
     try:
         (infilename, outfilename, tileWidth, tileHeight,
          usePackBits) = parse_argv(argv)
-    except StandardError, e:
+    except Exception as e:
         sys.stderr.write("%s: %s\n" % (argv[0], str(e)))
         sys.exit(1)
 
     im = Image.open(infilename)
     outdata = pilbmp2chr(im, tileWidth, tileHeight,
                          lambda im: formatTilePlanar(im, 2))
-    outdata = ''.join(outdata)
+    outdata = b''.join(outdata)
     if usePackBits:
         from packbits import PackBits
         sz = len(outdata) % 0x10000
-        outdata = PackBits(outdata).flush().tostring()
-        outdata = ''.join([chr(sz >> 8), chr(sz & 0xFF), outdata])
+        outdata = PackBits(outdata).flush().tobytes()
+        outdata = b''.join([chr(sz >> 8), chr(sz & 0xFF), outdata])
 
     # Read input file
     outfp = None
